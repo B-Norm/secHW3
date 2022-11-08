@@ -1,18 +1,16 @@
 import * as React from "react";
-import { Switch, Route, Router } from "wouter";
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Login from "../pages/login/login";
 import Register from "../pages/login/register";
 
 
 
 export default () => (
-    <Switch>
-      <Route path="/" exact>
-        <Login />
-      </Route>
     
-      <Route path="/register" exact>
-        <Register />
-      </Route>
-    </Switch>
+      <Routes>
+        <Route path="/" element ={<Login />}/>
+        
+        <Route path="/register" element= {<Register />} />
+      </Routes>
+    
 );
