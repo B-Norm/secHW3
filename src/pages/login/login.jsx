@@ -1,32 +1,53 @@
-import React from 'react';
-import {Routes, Route, useNavigate} from 'react-router-dom';
-
+import React from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import "antd/dist/antd.css";
 import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import axios from 'axios';
+import axios from "axios";
+import Register from "../register/register.jsx";
+import PropTypes from "prop-types";
 
+const API_KEY = import.meta.env.VITE_API_KEY;
 
+export default function Login({ setToken }) {
+  // move to registration page
+  const toReg = () => {
+    setToken(1);
+  };
 
-export default function Login() {
-  
-  //verify login info
-  const onFinish = values => {
-    const {username, password} = values
-    axios.post('https://smartinventory-backend.glitch.me/users/validateUser', 
-               null, 
-               {params: {username, password}})
-    .then(res => {
-      if(res.data.validation){
-        alert("Your password is correct.") //TODO: navigate to inventory page
-      }
-      else{
-        alert("Your password is incorrect. Try again.")
-      }
-    })
-  }
-  
-  
+  // logic for Login
+  let onFinish = async (values) => {
+    const request_url = "https://bradz-backend.glitch.me/login";
+    const { username, password } = values;
+
+    //axios request options
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        api_key: API_KEY,
+      },
+      data: {
+        username,
+        password,
+      },
+      url: request_url,
+    };
+
+    //axios request
+    const response = await axios(options)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(response);
+          setToken(response.data);
+        }
+      })
+      .catch((error) => {
+        alert("Your credentials are incorrect. Try again.");
+        console.log(values);
+      });
+  };
+
   return (
     <div
       style={{
@@ -36,7 +57,6 @@ export default function Login() {
       }}
     >
       <div style={{ width: 400 }}>
-        <img src={"https://cdn.glitch.global/ba37ca7a-26f4-4674-bea2-b77346f737cf/smart_inventory_logo.png?v=1666977749129"} alt="logo" style={{ width: 400 }} />
         <h1 style={{ textAlign: "center" }}>Login</h1>
         <Form
           name="normal_login"
@@ -75,15 +95,6 @@ export default function Login() {
               placeholder="Password"
             />
           </Form.Item>
-          <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-
-            <a className="login-form-forgot" href="">
-              Forgot password
-            </a>
-          </Form.Item>
 
           <Form.Item>
             <Button
@@ -93,10 +104,14 @@ export default function Login() {
             >
               Log in
             </Button>
-            Or <a  href="/register">register now!</a>
+            Or <a onClick={toReg}>register now!</a>
           </Form.Item>
         </Form>
-      </div>    
+      </div>
     </div>
   );
 }
+
+Login.prototype = {
+  setToken: PropTypes.func.isRequired,
+};
