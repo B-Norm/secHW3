@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     port: 3000,
     hmr: {
-      port: 443 // Run the websocket server on the SSL port
+      port: 442 // Run the websocket server on the SSL port
     }
   } 
 });
