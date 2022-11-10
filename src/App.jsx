@@ -1,3 +1,4 @@
+// https://bradz-s3.glitch.me
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./pages/login/login.jsx";
@@ -11,7 +12,7 @@ function App() {
   // move to login screen if not
   if (token == 1) {
     return <Register setToken={setToken} />;
-  } else if (!token) {
+  } else if (!token || token == 0) {
     return <Login setToken={setToken} />;
   }
 

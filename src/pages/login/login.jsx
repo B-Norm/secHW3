@@ -38,13 +38,13 @@ export default function Login({ setToken }) {
     const response = await axios(options)
       .then((response) => {
         if (response.status === 200) {
-          console.log(response);
+          console.log("login pass here");
           setToken(response.data);
         }
       })
       .catch((error) => {
+        console.log("login fail here");
         alert("Your credentials are incorrect. Try again.");
-        console.log(values);
       });
   };
 

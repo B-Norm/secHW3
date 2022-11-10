@@ -25,7 +25,7 @@
     "not dead"
   ],
   "engines": {
-    "node": "12.x"
+    "node": "16.x"
   },
   "glitch": {
     "projectType": "generated_static"

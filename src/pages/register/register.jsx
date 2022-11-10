@@ -11,6 +11,10 @@ import {
   Select,
 } from "antd";
 import React, { useState } from "react";
+import axios from "axios";
+import PropTypes from "prop-types";
+
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 // most of the formatting provided
 // by antd's website and examples
@@ -45,10 +49,45 @@ const tailFormItemLayout = {
   },
 };
 
-const App = () => {
+export default function Register({ setToken }) {
   const [form] = Form.useForm();
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+
+  // return to login
+  const toLog = () => {
+    setToken(0);
+  };
+
+  const onFinish = async (values) => {
+    const request_url = "https://bradz-backend.glitch.me/createUser";
+    const { username, name, password } = values;
+
+    //axios request options
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        api_key: API_KEY,
+      },
+      data: {
+        username,
+        name,
+        password,
+      },
+      url: request_url,
+    };
+
+    //axios request
+    const response = await axios(options)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("user added");
+          //toLog();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Username Taken.");
+      });
   };
 
   return (
@@ -146,5 +185,8 @@ const App = () => {
       </div>
     </div>
   );
+}
+
+Register.prototype = {
+  setToken: PropTypes.func.isRequired,
 };
-export default App;
