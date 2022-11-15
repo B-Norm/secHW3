@@ -49,12 +49,13 @@ const tailFormItemLayout = {
   },
 };
 
-export default function Register({ setToken }) {
+export default function Register({ setAccessToken }) {
   const [form] = Form.useForm();
 
   // return to login
   const toLog = () => {
-    setToken(0);
+    var data = { accessToken: 0 };
+    setAccessToken(data);
   };
 
   const onFinish = async (values) => {
@@ -80,12 +81,11 @@ export default function Register({ setToken }) {
     const response = await axios(options)
       .then((response) => {
         if (response.status === 200) {
-          console.log("user added");
-          //toLog();
+          console.log("user   added");
+          toLog();
         }
       })
       .catch((error) => {
-        console.log(error);
         alert("Username Taken.");
       });
   };
@@ -180,6 +180,7 @@ export default function Register({ setToken }) {
             <Button type="primary" htmlType="submit">
               Register
             </Button>
+            or <a onClick={toLog}>Back to Login</a>
           </Form.Item>
         </Form>
       </div>
@@ -188,5 +189,5 @@ export default function Register({ setToken }) {
 }
 
 Register.prototype = {
-  setToken: PropTypes.func.isRequired,
+  setAccessToken: PropTypes.func.isRequired,
 };

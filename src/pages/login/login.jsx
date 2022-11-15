@@ -9,10 +9,11 @@ import PropTypes from "prop-types";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
-export default function Login({ setToken }) {
+export default function Login({ setAccessToken, setRefreshToken }) {
   // move to registration page
   const toReg = () => {
-    setToken(1);
+    var data = { accessToken: 1 };
+    setAccessToken(data);
   };
 
   // logic for Login
@@ -39,11 +40,12 @@ export default function Login({ setToken }) {
       .then((response) => {
         if (response.status === 200) {
           console.log("login pass here");
-          setToken(response.data);
+          setAccessToken(response.data);
+          setRefreshToken(response.data);
         }
       })
       .catch((error) => {
-        console.log("login fail here");
+        console.log(error);
         alert("Your credentials are incorrect. Try again.");
       });
   };
@@ -113,5 +115,6 @@ export default function Login({ setToken }) {
 }
 
 Login.prototype = {
-  setToken: PropTypes.func.isRequired,
+  setAccessToken: PropTypes.func.isRequired,
+  setRefreshToken: PropTypes.func.isRequired,
 };
